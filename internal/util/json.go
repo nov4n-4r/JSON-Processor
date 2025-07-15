@@ -56,15 +56,15 @@ func JsonMap(src *[]byte, fields []string) error {
 	}
 
 	data := make(map[string]interface{})
-	result := make(map[string]interface{})
+	// result := make(map[string]interface{})
 
 	if err := json.Unmarshal(*src, &data); err != nil {
 		return err
 	}
 
-	for i := 0; i < len(fields); i++ {
-		result
-	}
+	// for i := 0; i < len(fields); i++ {
+	// 	result
+	// }
 
 	return nil
 
