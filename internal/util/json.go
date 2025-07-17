@@ -6,8 +6,8 @@ import (
 )
 
 type JsonStructure struct {
-	key   string
-	value string
+	Key   string
+	Value any
 }
 
 var NilDestinationError = errors.New("nil destination error")
@@ -35,11 +35,7 @@ func JsonCheck(src *[]byte, filters []JsonStructure) (bool, error) {
 
 		filt := filters[i]
 
-		if !json.Valid([]byte(filt.value)) {
-			return false, InvalidJSONError
-		}
-
-		if data[filt.key] != filt.value {
+		if data[filt.Key] != filt.Value {
 			return false, nil
 		}
 
@@ -56,15 +52,22 @@ func JsonMap(src *[]byte, fields []string) error {
 	}
 
 	data := make(map[string]interface{})
-	// result := make(map[string]interface{})
+	result := make(map[string]interface{})
 
 	if err := json.Unmarshal(*src, &data); err != nil {
 		return err
 	}
 
-	// for i := 0; i < len(fields); i++ {
-	// 	result
-	// }
+	for i := 0; i < len(fields); i++ {
+		result[fields[i]] = data[fields[i]]
+	}
+
+	r, e := json.Marshal(result)
+	*src = r
+
+	if e != nil {
+		return InvalidJSONError
+	}
 
 	return nil
 
