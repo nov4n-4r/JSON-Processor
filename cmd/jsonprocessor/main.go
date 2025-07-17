@@ -6,15 +6,30 @@ import (
 )
 
 func main() {
-	isValid, e := util.JsonValidation(`{
-		"name": "John Doe",
-		"age": 30
+
+	data := []byte(`{
+		"name": "Deson",
+		"age": 39,
+		"city": "Khaby Lake"
 	}`)
 
-	if e != nil {
-		fmt.Println("Error validating JSON:", e)
-		return
+	fields := []string{"name"}
+
+	util.JsonMap(&data, fields)
+
+	fmt.Printf("Hasil akhir: %s\n", string(data))
+
+	filters := []util.JsonStructure{
+		{Key: "name", Value: "Deson"},
+		{Key: "age", Value: int(39)},
 	}
 
-	fmt.Printf("Is the JSON valid? %v\n", isValid)
+	isValid, e := util.JsonCheck(&data, filters)
+
+	if e != nil {
+		fmt.Printf("Error: %s\n", e.Error())
+	}
+
+	fmt.Printf("Hasil checking: %t\n", isValid)
+
 }
